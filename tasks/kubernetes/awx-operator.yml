@@ -1,0 +1,31 @@
+---
+- name: Deploy awx-operator.
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Ensure awx namespace exists.
+      k8s:
+        name: awx
+        kind: Namespace
+        api_version: v1
+        kubeconfig: "{{ kubeconfig | default(omit) }}"
+        state: present
+
+    - name: Ensure awx-operator helm repo is added.
+      kubernetes.core.helm_repository:
+        name: awx-operator
+        repo_url: https://ansible.github.io/awx-operator/
+        kubeconfig: "{{ kubeconfig | default(omit) }}"
+
+    - name: Ensure awx-operator is running in desired state.
+      kubernetes.core.helm:
+        name: awx-operator
+        chart_ref: awx-operator/awx-operator
+        chart_version: 2.5.3
+        release_namespace: awx
+        kubeconfig: "{{ kubeconfig | default(omit) }}"
+        state: present
+        values:
+          injector:
+            enabled: false

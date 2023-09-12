@@ -1,0 +1,32 @@
+---
+- name: Configure pip packages.
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Ensure Pip packages are installed.
+      pip:
+        name:
+          - kubernetes
+          # - pyyaml
+        state: present
+
+
+- name: Configure helm.
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Ensure helm is installed.
+      command: helm version
+      changed_when: false
+
+    - name: Ensure helm diff plugin is installed.
+      kubernetes.core.helm_plugin:
+        plugin_path: https://github.com/databus23/helm-diff
+        state: present
+
+
+- import_playbook: tasks/kubernetes/awx-operator.yml
+- import_playbook: tasks/kubernetes/awx.yml

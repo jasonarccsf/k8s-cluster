@@ -1,0 +1,13 @@
+---
+- name: Deploy awx.
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Ensure awx is running in desired state.
+      k8s:
+        definition: "{{ lookup('template', '../../templates/' + item ) }}"
+        kubeconfig: "{{ kubeconfig | default(omit) }}"
+        state: present
+      loop:
+        - awx.yml
