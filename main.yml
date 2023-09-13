@@ -2,7 +2,6 @@
 - name: Configure pip packages.
   hosts: all
   gather_facts: false
-  become: true
 
   tasks:
     - name: Ensure Pip packages are installed.
