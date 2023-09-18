@@ -1,4 +1,4 @@
-.DEFAULT_GOAL := main
+.DEFAULT_GOAL := awx-operator
 
 ## AWX
 
