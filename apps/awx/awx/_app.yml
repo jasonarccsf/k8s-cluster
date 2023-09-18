@@ -1,4 +1,7 @@
-apiVersion: v1
-kind: Namespace
+apiVersion: awx.ansible.com/v1beta1
+kind: AWX
 metadata:
   name: awx
+  namespace: awx
+spec:
+  service_type: clusterip
